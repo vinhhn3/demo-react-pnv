@@ -18,3 +18,13 @@
 | GET    | /category/:id  | Get a specific category by ID           |
 | PUT    | /category/:id  | Update a specific category by ID        |
 | DELETE | /category/:id  | Delete a specific category by ID        |
+
+# Flowchart
+
+## /register
+
+![alt text](image-2.png)
+
+## /login
+
+![alt text](image-1.png)

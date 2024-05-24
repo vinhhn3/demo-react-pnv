@@ -4,7 +4,10 @@ const Todo = require("../models/Todo");
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const todo = new Todo(req.body);
+  const todo = new Todo({
+    ...req.body,
+    user: req.cookies.userId, // Add the userId from the cookie to the todo
+  });
   try {
     await todo.save();
     res.status(201).send(todo);
@@ -17,8 +20,10 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const todos = await Todo.find();
-    res.status(200).send(todos);
+    const todos = await Todo.find({ user: req.cookies.userId })
+      .populate("user")
+      .populate("category"); // Only find todos for the current user
+    res.send(todos);
   } catch (error) {
     res
       .status(500)
@@ -26,29 +31,18 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  try {
-    const todo = await Todo.findById(req.params.id);
-    if (!todo) {
-      return res.status(404).send({ message: "Todo not found" });
-    }
-    res.status(200).send(todo);
-  } catch (error) {
-    res
-      .status(500)
-      .send({ message: "Error fetching todo", error: error.message });
-  }
-});
-
 router.put("/:id", async (req, res) => {
   try {
-    const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const todo = await Todo.findOne({
+      _id: req.params.id,
+      user: req.cookies.userId,
+    }); // Only find todo for the current user
     if (!todo) {
-      return res.status(404).send({ message: "Todo not found" });
+      return res.status(404).send();
     }
-    res.status(200).send(todo);
+    Object.assign(todo, req.body);
+    await todo.save();
+    res.send(todo);
   } catch (error) {
     res
       .status(500)
@@ -58,11 +52,14 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const todo = await Todo.findByIdAndDelete(req.params.id);
+    const todo = await Todo.findOneAndDelete({
+      _id: req.params.id,
+      user: req.cookies.userId,
+    }); // Only delete todo for the current user
     if (!todo) {
-      return res.status(404).send({ message: "Todo not found" });
+      return res.status(404).send();
     }
-    res.status(200).send({ message: "Todo deleted successfully" });
+    res.send(todo);
   } catch (error) {
     res
       .status(500)

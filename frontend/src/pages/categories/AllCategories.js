@@ -1,30 +1,19 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const AllCategories = () => {
-  const [categoryName, setCategoryName] = useState("");
+  const [categories, setCategories] = useState([]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your logic to handle form submission here
-    console.log("Category Name:", categoryName);
-    // Reset the form
-    setCategoryName("");
-  };
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    const res = await axios.get("http://localhost:3000/category");
+    console.log(res);
+    setCategories(res.data);
+  }, []);
   return (
     <div>
-      <h1>Create Category</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Category Name:
-          <input
-            type="text"
-            value={categoryName}
-            onChange={(e) => setCategoryName(e.target.value)}
-          />
-        </label>
-        <button type="submit">Create</button>
-      </form>
+      <h1>All Categories</h1>
+      <a href="/categories/add">Add Category</a>
     </div>
   );
 };

@@ -1,4 +1,6 @@
 # Exercise / Lab
 
-- [] Create CRUD pages for todos
-- [] Make the layout, css better
+- [] Complete Register Page
+- [] Display all categories as table
+- [] Complete CreateCategory.js
+- [] Complete CR of todos

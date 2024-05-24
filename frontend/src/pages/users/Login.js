@@ -15,7 +15,7 @@ function Login() {
         password,
       });
       console.log("Login successful");
-      history.push("/");
+      history.push("/categories/all");
     } catch (error) {
       console.error("Login failed", error);
       alert("Login failed");

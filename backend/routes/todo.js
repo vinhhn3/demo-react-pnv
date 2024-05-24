@@ -4,9 +4,11 @@ const Todo = require("../models/Todo");
 const router = express.Router();
 
 router.post("/", async (req, res) => {
+  const { title, categoryId } = req.body;
   const todo = new Todo({
-    ...req.body,
+    title,
     user: req.cookies.userId, // Add the userId from the cookie to the todo
+    category: categoryId, // Add the categoryId from the request body to the todo
   });
   try {
     await todo.save();

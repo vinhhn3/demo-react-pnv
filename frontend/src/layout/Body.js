@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import AllCategories from "../pages/categories/AllCategories";
 import CreateCategory from "../pages/categories/CreateCategory";
 import DetailCategory from "../pages/categories/DetailCategory";
+import UpdateCategory from "../pages/categories/UpdateCategory";
 import Login from "../pages/users/Login";
 import Register from "../pages/users/Register";
 const Body = () => {
@@ -29,6 +30,9 @@ const Body = () => {
         </Route>
         <Route exact path="/categories/:id">
           <DetailCategory />
+        </Route>
+        <Route exact path="/categories/update/:id">
+          <UpdateCategory />
         </Route>
       </Switch>
     </div>

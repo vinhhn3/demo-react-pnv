@@ -11,10 +11,10 @@ function DetailCategory() {
   const navigate = useHistory();
 
   useEffect(() => {
-    getCategory(id);
+    getCategory();
   }, []);
 
-  const getCategory = async (id) => {
+  const getCategory = async () => {
     const res = await axios.get(`http://localhost:3000/category/${id}`);
     console.log(res);
 
